@@ -1,0 +1,27 @@
+[project]
+name = "punerecpip"
+version = "0.1.0"
+description = "India Real Estate Intelligence Platform (Pune-first)"
+requires-python = ">=3.13"
+
+[tool.uv.workspace]
+# Add each new app/package here as its module is implemented.
+members = [
+    "packages/core",
+    "apps/api",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+plugins = ["sqlalchemy.ext.mypy.plugin"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

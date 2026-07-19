@@ -12,12 +12,23 @@ website terms of service and privacy laws.
 
 Built module by module, with explicit approval required between modules. See
 [`docs/architecture/01-architecture.md`](docs/architecture/01-architecture.md) for the
-current architecture (Module 1 — design only, no implementation yet).
+architecture and [`docs/modules/02-database.md`](docs/modules/02-database.md) for the
+database schema.
+
+## Development setup (Module 2+)
+
+```bash
+uv sync --all-packages
+createdb punerecpip   # then, as a superuser: citext, pg_trgm, postgis, vector extensions
+cp .env.example .env  # fill in DATABASE_URL etc.
+cd apps/api && uv run alembic upgrade head
+uv run pytest apps/api/tests packages/core/tests
+```
 
 ## Modules
 
 1. Architecture — **in review**
-2. Database
+2. Database — **in review**
 3. Company Discovery
 4. Website Crawling
 5. AI Enrichment

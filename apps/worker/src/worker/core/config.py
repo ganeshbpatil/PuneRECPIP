@@ -62,6 +62,17 @@ class Settings(BaseSettings):
     anthropic_api_key: str | None = None
     openai_api_key: str | None = None
 
+    # Public RERA registry enrichment (Module 7). Reuses the discovery-style
+    # rate-limit/robots/retry plumbing since it's the same "polite public-web
+    # HTTP client" shape.
+    rera_user_agent: str = (
+        "PuneRECPIPBot/0.1 (+https://github.com/ganeshbpatil/PuneRECPIP; "
+        "public RERA registry lookup; respects robots.txt)"
+    )
+    rera_request_timeout_seconds: float = 15.0
+    rera_max_retries: int = 3
+    rera_default_requests_per_second: float = 0.5
+
 
 @lru_cache
 def get_settings() -> Settings:

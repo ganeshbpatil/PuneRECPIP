@@ -1,7 +1,7 @@
 import time
 
 import pytest
-from worker.discovery.ratelimit import DomainRateLimiter, TokenBucket
+from worker.net.ratelimit import DomainRateLimiter, TokenBucket
 
 
 @pytest.mark.asyncio

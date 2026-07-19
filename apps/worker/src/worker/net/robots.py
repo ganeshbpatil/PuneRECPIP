@@ -1,4 +1,7 @@
-"""robots.txt compliance, cached per domain for the lifetime of a discovery run.
+"""robots.txt compliance, cached per origin for the lifetime of a job. Shared
+by discovery (worker.discovery.sources) and crawling (worker.crawling) —
+every outbound fetch this worker makes to a third-party site goes through
+this.
 
 Follows RFC 9309 conventions: a fetchable robots.txt (200) is parsed and obeyed;
 a confirmed-missing one (4xx) means no restrictions were published, so crawling
@@ -7,7 +10,7 @@ temporary block rather than assumed permissive, since we can't tell whether
 restrictions exist.
 """
 
-from urllib.parse import urljoin
+from urllib.parse import urlsplit
 from urllib.robotparser import RobotFileParser
 
 import httpx
@@ -19,12 +22,12 @@ class RobotsCache:
         self._user_agent = user_agent
         self._parsers: dict[str, RobotFileParser | None] = {}
 
-    async def _get_parser(self, domain: str) -> RobotFileParser | None:
-        if domain in self._parsers:
-            return self._parsers[domain]
+    async def _get_parser(self, origin: str) -> RobotFileParser | None:
+        if origin in self._parsers:
+            return self._parsers[origin]
 
         parser: RobotFileParser | None
-        robots_url = f"https://{domain}/robots.txt"
+        robots_url = f"{origin}/robots.txt"
         try:
             response = await self._client.get(robots_url, timeout=10.0)
         except httpx.HTTPError:
@@ -39,11 +42,17 @@ class RobotsCache:
             else:
                 parser = None  # 5xx -> conservative full-disallow
 
-        self._parsers[domain] = parser
+        self._parsers[origin] = parser
         return parser
 
-    async def is_allowed(self, domain: str, path: str) -> bool:
-        parser = await self._get_parser(domain)
+    async def is_allowed(self, url: str) -> bool:
+        """`url` is the actual target being fetched — its scheme and host
+        (including a non-default port, if any) determine which robots.txt
+        applies. Passing a bare domain here would silently assume https,
+        which breaks for http-only sites (and for any local test server)."""
+        parts = urlsplit(url)
+        origin = f"{parts.scheme}://{parts.netloc}"
+        parser = await self._get_parser(origin)
         if parser is None:
             return False
-        return parser.can_fetch(self._user_agent, urljoin(f"https://{domain}/", path))
+        return parser.can_fetch(self._user_agent, url)

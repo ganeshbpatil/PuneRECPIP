@@ -16,6 +16,7 @@ EXPECTED_TABLES = {
     "company_projects",
     "company_specializations",
     "contacts",
+    "crawl_snapshots",
     "developers",
     "emails",
     "google_maps_listings",

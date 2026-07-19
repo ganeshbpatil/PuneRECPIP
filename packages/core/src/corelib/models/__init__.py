@@ -10,6 +10,7 @@ from corelib.models.business_category import BusinessCategory
 from corelib.models.change_history import ChangeHistory
 from corelib.models.company import Company, CompanyCategory
 from corelib.models.contact import Contact
+from corelib.models.crawl_snapshot import CrawlSnapshot
 from corelib.models.developer import CompanyDeveloperPartnership, Developer
 from corelib.models.email import EmailAddress
 from corelib.models.gmaps import GoogleMapsListing
@@ -36,6 +37,7 @@ __all__ = [
     "Company",
     "CompanyCategory",
     "Contact",
+    "CrawlSnapshot",
     "CompanyDeveloperPartnership",
     "Developer",
     "EmailAddress",

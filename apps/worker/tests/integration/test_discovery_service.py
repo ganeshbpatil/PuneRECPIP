@@ -7,11 +7,11 @@ from corelib.models import Company, JobLog, PhoneNumber, ScrapeJob, Website
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from worker.discovery.jobs import create_discovery_job
-from worker.discovery.ratelimit import DomainRateLimiter
-from worker.discovery.robots import RobotsCache
 from worker.discovery.service import DiscoveryService
 from worker.discovery.site_profiles import EXAMPLE_PROFILE
 from worker.discovery.sources import DirectoryDiscoverySource
+from worker.net.ratelimit import DomainRateLimiter
+from worker.net.robots import RobotsCache
 
 pytestmark = pytest.mark.asyncio
 

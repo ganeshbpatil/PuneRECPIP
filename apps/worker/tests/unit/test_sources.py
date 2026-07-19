@@ -3,10 +3,10 @@ from pathlib import Path
 import httpx
 import pytest
 from worker.discovery.models import SearchQuery
-from worker.discovery.ratelimit import DomainRateLimiter
-from worker.discovery.robots import RobotsCache
 from worker.discovery.site_profiles import EXAMPLE_PROFILE
 from worker.discovery.sources import DirectoryDiscoverySource, RobotsDisallowedError
+from worker.net.ratelimit import DomainRateLimiter
+from worker.net.robots import RobotsCache
 
 pytestmark = pytest.mark.asyncio
 

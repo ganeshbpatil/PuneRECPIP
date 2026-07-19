@@ -12,11 +12,11 @@ from sqlalchemy import select
 from worker.celery_app import app
 from worker.core.config import get_settings
 from worker.core.db import get_session_factory
-from worker.discovery.ratelimit import DomainRateLimiter
-from worker.discovery.robots import RobotsCache
 from worker.discovery.service import DiscoveryService
 from worker.discovery.site_profiles import SITE_PROFILES
 from worker.discovery.sources import DirectoryDiscoverySource
+from worker.net.ratelimit import DomainRateLimiter
+from worker.net.robots import RobotsCache
 
 logger = logging.getLogger(__name__)
 

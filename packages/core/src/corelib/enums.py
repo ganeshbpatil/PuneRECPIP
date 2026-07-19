@@ -85,6 +85,21 @@ class WebsiteStatus(StrEnum):
     UNKNOWN = "unknown"
 
 
+class PageType(StrEnum):
+    """Deterministic, keyword-based per-page classification used to decide which
+    internal links a crawl follows (Module 4). Not the AI-driven business
+    classification of Module 5 — this only routes/labels pages within a site."""
+
+    HOME = "home"
+    ABOUT = "about"
+    SERVICES = "services"
+    TEAM = "team"
+    CONTACT = "contact"
+    PROJECTS = "projects"
+    DEVELOPERS = "developers"
+    OTHER = "other"
+
+
 class SocialPlatform(StrEnum):
     LINKEDIN = "linkedin"
     FACEBOOK = "facebook"

@@ -5,16 +5,15 @@ engine — generic paginated-HTML-directory scraping — driven entirely by a
 
 import logging
 from typing import Protocol
-from urllib.parse import urlsplit
 
 import httpx
 from selectolax.parser import HTMLParser, Node
 
 from worker.discovery.models import DiscoveredListing, DiscoveryPage, SearchQuery
-from worker.discovery.ratelimit import DomainRateLimiter
-from worker.discovery.retry import fetch_with_retry
-from worker.discovery.robots import RobotsCache
 from worker.discovery.site_profiles import SiteProfile
+from worker.net.ratelimit import DomainRateLimiter
+from worker.net.retry import fetch_with_retry
+from worker.net.robots import RobotsCache
 
 logger = logging.getLogger(__name__)
 
@@ -51,10 +50,8 @@ class DirectoryDiscoverySource:
         url = self._profile.search_url_template.format(
             keyword=query.keyword, location=query.location, page=page
         )
-        parts = urlsplit(url)
-        path_and_query = parts.path + (f"?{parts.query}" if parts.query else "")
 
-        if not await self._robots.is_allowed(self._profile.domain, path_and_query):
+        if not await self._robots.is_allowed(url):
             raise RobotsDisallowedError(url)
 
         await self._rate_limiter.acquire(self._profile.domain, self._profile.requests_per_second)

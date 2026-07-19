@@ -13,8 +13,9 @@ website terms of service and privacy laws.
 Built module by module, with explicit approval required between modules. See
 [`docs/architecture/01-architecture.md`](docs/architecture/01-architecture.md) for the
 architecture, [`docs/modules/02-database.md`](docs/modules/02-database.md) for the
-database schema, and [`docs/modules/03-discovery.md`](docs/modules/03-discovery.md) for
-company discovery.
+database schema, [`docs/modules/03-discovery.md`](docs/modules/03-discovery.md) for
+company discovery, and [`docs/modules/04-crawling.md`](docs/modules/04-crawling.md) for
+website crawling.
 
 ## Development setup
 
@@ -23,10 +24,11 @@ uv sync --all-packages
 createdb punerecpip   # then, as a superuser: citext, pg_trgm, postgis, vector extensions
 cp .env.example .env  # fill in DATABASE_URL, REDIS_URL, etc.
 cd apps/api && uv run alembic upgrade head
+uv run --project apps/worker playwright install chromium  # needed once, for crawling
 uv run pytest apps/api/tests packages/core/tests apps/worker/tests
 
-# to run a discovery job for real: redis-server, then from apps/worker
-uv run celery -A worker.celery_app worker --loglevel=info -Q discovery
+# to run discovery/crawl jobs for real: start redis-server, then from apps/worker
+uv run celery -A worker.celery_app worker --loglevel=info -Q discovery,crawl
 ```
 
 ## Modules
@@ -34,7 +36,7 @@ uv run celery -A worker.celery_app worker --loglevel=info -Q discovery
 1. Architecture — **in review**
 2. Database — **in review**
 3. Company Discovery — **in review**
-4. Website Crawling
+4. Website Crawling — **in review**
 5. AI Enrichment
 6. Social Discovery
 7. Public RERA Enrichment

@@ -41,6 +41,14 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-packages
 
+      - name: Install Playwright's Chromium
+        # This runner has no pre-installed browser (unlike the sandbox this
+        # module was developed in — see docs/modules/04-crawling.md), so let
+        # Playwright fetch a build matching its own pinned revision. Leaving
+        # CHROMIUM_EXECUTABLE_PATH unset below means the worker settings
+        # default (None) applies and Playwright manages this install itself.
+        run: uv run --project apps/worker playwright install --with-deps chromium
+
       - name: Run tests
         env:
           TEST_DATABASE_URL: postgresql+asyncpg://punerecpip:punerecpip_ci@localhost:5432/punerecpip_test

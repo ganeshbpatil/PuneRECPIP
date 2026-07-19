@@ -14,21 +14,22 @@ Built module by module, with explicit approval required between modules. See
 [`docs/architecture/01-architecture.md`](docs/architecture/01-architecture.md) for the
 architecture, [`docs/modules/02-database.md`](docs/modules/02-database.md) for the
 database schema, [`docs/modules/03-discovery.md`](docs/modules/03-discovery.md) for
-company discovery, and [`docs/modules/04-crawling.md`](docs/modules/04-crawling.md) for
-website crawling.
+company discovery, [`docs/modules/04-crawling.md`](docs/modules/04-crawling.md) for
+website crawling, and [`docs/modules/05-ai-enrichment.md`](docs/modules/05-ai-enrichment.md)
+for AI enrichment.
 
 ## Development setup
 
 ```bash
 uv sync --all-packages
 createdb punerecpip   # then, as a superuser: citext, pg_trgm, postgis, vector extensions
-cp .env.example .env  # fill in DATABASE_URL, REDIS_URL, etc.
+cp .env.example .env  # fill in DATABASE_URL, REDIS_URL, ANTHROPIC_API_KEY/OPENAI_API_KEY, etc.
 cd apps/api && uv run alembic upgrade head
 uv run --project apps/worker playwright install chromium  # needed once, for crawling
 uv run pytest apps/api/tests packages/core/tests apps/worker/tests
 
-# to run discovery/crawl jobs for real: start redis-server, then from apps/worker
-uv run celery -A worker.celery_app worker --loglevel=info -Q discovery,crawl
+# to run discovery/crawl/extraction jobs for real: start redis-server, then from apps/worker
+uv run celery -A worker.celery_app worker --loglevel=info -Q discovery,crawl,extraction
 ```
 
 ## Modules
@@ -37,7 +38,7 @@ uv run celery -A worker.celery_app worker --loglevel=info -Q discovery,crawl
 2. Database — **in review**
 3. Company Discovery — **in review**
 4. Website Crawling — **in review**
-5. AI Enrichment
+5. AI Enrichment — **in review**
 6. Social Discovery
 7. Public RERA Enrichment
 8. Duplicate Detection

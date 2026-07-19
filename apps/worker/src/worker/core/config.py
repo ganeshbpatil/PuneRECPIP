@@ -46,6 +46,22 @@ class Settings(BaseSettings):
     object_storage_access_key: str | None = None
     object_storage_secret_key: str | None = None
 
+    # AI Enrichment (Module 5).
+    enrichment_provider: str = "claude"  # "claude" | "openai"
+    enrichment_claude_model: str = "claude-sonnet-5"
+    enrichment_openai_model: str = "gpt-4o-mini"
+    enrichment_embedding_model: str = "text-embedding-3-small"
+    # SDK-level retry (both AsyncAnthropic/AsyncOpenAI retry transient
+    # 429/5xx/connection errors internally) rather than a hand-rolled retry
+    # loop in EnrichmentService — see docs/modules/05-ai-enrichment.md.
+    enrichment_max_retries: int = 3
+    # Combined crawled-markdown budget handed to the AI provider, roughly
+    # 4 chars/token — keeps a multi-page crawl within a reasonable request
+    # size/cost regardless of how much content Module 4 collected.
+    enrichment_max_content_chars: int = 24000
+    anthropic_api_key: str | None = None
+    openai_api_key: str | None = None
+
 
 @lru_cache
 def get_settings() -> Settings:

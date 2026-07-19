@@ -15,8 +15,9 @@ Built module by module, with explicit approval required between modules. See
 architecture, [`docs/modules/02-database.md`](docs/modules/02-database.md) for the
 database schema, [`docs/modules/03-discovery.md`](docs/modules/03-discovery.md) for
 company discovery, [`docs/modules/04-crawling.md`](docs/modules/04-crawling.md) for
-website crawling, and [`docs/modules/05-ai-enrichment.md`](docs/modules/05-ai-enrichment.md)
-for AI enrichment.
+website crawling, [`docs/modules/05-ai-enrichment.md`](docs/modules/05-ai-enrichment.md)
+for AI enrichment, and [`docs/modules/06-social-discovery.md`](docs/modules/06-social-discovery.md)
+for social discovery.
 
 ## Development setup
 
@@ -28,8 +29,9 @@ cd apps/api && uv run alembic upgrade head
 uv run --project apps/worker playwright install chromium  # needed once, for crawling
 uv run pytest apps/api/tests packages/core/tests apps/worker/tests
 
-# to run discovery/crawl/extraction jobs for real: start redis-server, then from apps/worker
-uv run celery -A worker.celery_app worker --loglevel=info -Q discovery,crawl,extraction
+# to run discovery/crawl/extraction/enrichment jobs for real: start redis-server, then
+# from apps/worker
+uv run celery -A worker.celery_app worker --loglevel=info -Q discovery,crawl,extraction,enrichment
 ```
 
 ## Modules
@@ -39,7 +41,7 @@ uv run celery -A worker.celery_app worker --loglevel=info -Q discovery,crawl,ext
 3. Company Discovery — **in review**
 4. Website Crawling — **in review**
 5. AI Enrichment — **in review**
-6. Social Discovery
+6. Social Discovery — **in review**
 7. Public RERA Enrichment
 8. Duplicate Detection
 9. Geographic Intelligence

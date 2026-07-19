@@ -44,4 +44,4 @@ jobs:
       - name: Run tests
         env:
           TEST_DATABASE_URL: postgresql+asyncpg://punerecpip:punerecpip_ci@localhost:5432/punerecpip_test
-        run: uv run pytest packages/core/tests apps/api/tests -v
+        run: uv run pytest packages/core/tests apps/api/tests apps/worker/tests -v

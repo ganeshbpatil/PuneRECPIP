@@ -2,13 +2,12 @@ import asyncio
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy import Connection, pool
-from sqlalchemy.ext.asyncio import async_engine_from_config
+from api.core.config import get_settings
 
 # Registers every model on Base.metadata — required before autogenerate can see them.
 from corelib.models import Base
-
-from api.core.config import get_settings
+from sqlalchemy import Connection, pool
+from sqlalchemy.ext.asyncio import async_engine_from_config
 
 config = context.config
 

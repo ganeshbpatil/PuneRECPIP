@@ -12,24 +12,28 @@ website terms of service and privacy laws.
 
 Built module by module, with explicit approval required between modules. See
 [`docs/architecture/01-architecture.md`](docs/architecture/01-architecture.md) for the
-architecture and [`docs/modules/02-database.md`](docs/modules/02-database.md) for the
-database schema.
+architecture, [`docs/modules/02-database.md`](docs/modules/02-database.md) for the
+database schema, and [`docs/modules/03-discovery.md`](docs/modules/03-discovery.md) for
+company discovery.
 
-## Development setup (Module 2+)
+## Development setup
 
 ```bash
 uv sync --all-packages
 createdb punerecpip   # then, as a superuser: citext, pg_trgm, postgis, vector extensions
-cp .env.example .env  # fill in DATABASE_URL etc.
+cp .env.example .env  # fill in DATABASE_URL, REDIS_URL, etc.
 cd apps/api && uv run alembic upgrade head
-uv run pytest apps/api/tests packages/core/tests
+uv run pytest apps/api/tests packages/core/tests apps/worker/tests
+
+# to run a discovery job for real: redis-server, then from apps/worker
+uv run celery -A worker.celery_app worker --loglevel=info -Q discovery
 ```
 
 ## Modules
 
 1. Architecture — **in review**
 2. Database — **in review**
-3. Company Discovery
+3. Company Discovery — **in review**
 4. Website Crawling
 5. AI Enrichment
 6. Social Discovery

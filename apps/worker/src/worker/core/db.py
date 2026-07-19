@@ -1,7 +1,7 @@
 from corelib.db import make_engine, make_session_factory
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
-from api.core.config import get_settings
+from worker.core.config import get_settings
 
 
 def get_engine() -> AsyncEngine:

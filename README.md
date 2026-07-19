@@ -17,8 +17,9 @@ database schema, [`docs/modules/03-discovery.md`](docs/modules/03-discovery.md) 
 company discovery, [`docs/modules/04-crawling.md`](docs/modules/04-crawling.md) for
 website crawling, [`docs/modules/05-ai-enrichment.md`](docs/modules/05-ai-enrichment.md)
 for AI enrichment, [`docs/modules/06-social-discovery.md`](docs/modules/06-social-discovery.md)
-for social discovery, and [`docs/modules/07-rera-enrichment.md`](docs/modules/07-rera-enrichment.md)
-for public RERA enrichment.
+for social discovery, [`docs/modules/07-rera-enrichment.md`](docs/modules/07-rera-enrichment.md)
+for public RERA enrichment, and [`docs/modules/08-duplicate-detection.md`](docs/modules/08-duplicate-detection.md)
+for duplicate detection.
 
 ## Development setup
 
@@ -44,7 +45,7 @@ uv run celery -A worker.celery_app worker --loglevel=info -Q discovery,crawl,ext
 5. AI Enrichment — **in review**
 6. Social Discovery — **in review**
 7. Public RERA Enrichment — **in review**
-8. Duplicate Detection
+8. Duplicate Detection — **in review**
 9. Geographic Intelligence
 10. Lead Scoring
 11. Search Platform

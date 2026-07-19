@@ -2,4 +2,4 @@
 `app` instance. New task modules (enrichment, dedup, geo, scoring, indexing,
 scheduling) get added here as their module lands."""
 
-from worker.tasks import crawling, discovery, enrichment, extraction  # noqa: F401
+from worker.tasks import crawling, dedup, discovery, enrichment, extraction  # noqa: F401

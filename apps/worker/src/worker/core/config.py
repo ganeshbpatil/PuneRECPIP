@@ -73,6 +73,19 @@ class Settings(BaseSettings):
     rera_max_retries: int = 3
     rera_default_requests_per_second: float = 0.5
 
+    # Geographic Intelligence (Module 9). Nominatim's usage policy requires a
+    # descriptive User-Agent and caps the shared public instance at 1 req/s —
+    # see worker/geo/nominatim.py. base_url is overridable to point at a
+    # self-hosted Nominatim instance or another provider for real volume.
+    geo_nominatim_base_url: str = "https://nominatim.openstreetmap.org/search"
+    geo_user_agent: str = (
+        "PuneRECPIPBot/0.1 (+https://github.com/ganeshbpatil/PuneRECPIP; "
+        "geocoding via Nominatim, respects usage policy)"
+    )
+    geo_request_timeout_seconds: float = 15.0
+    geo_max_retries: int = 3
+    geo_requests_per_second: float = 1.0
+
 
 @lru_cache
 def get_settings() -> Settings:

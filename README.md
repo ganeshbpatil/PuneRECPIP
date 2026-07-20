@@ -18,8 +18,9 @@ company discovery, [`docs/modules/04-crawling.md`](docs/modules/04-crawling.md) 
 website crawling, [`docs/modules/05-ai-enrichment.md`](docs/modules/05-ai-enrichment.md)
 for AI enrichment, [`docs/modules/06-social-discovery.md`](docs/modules/06-social-discovery.md)
 for social discovery, [`docs/modules/07-rera-enrichment.md`](docs/modules/07-rera-enrichment.md)
-for public RERA enrichment, and [`docs/modules/08-duplicate-detection.md`](docs/modules/08-duplicate-detection.md)
-for duplicate detection.
+for public RERA enrichment, [`docs/modules/08-duplicate-detection.md`](docs/modules/08-duplicate-detection.md)
+for duplicate detection, and [`docs/modules/09-geo-intelligence.md`](docs/modules/09-geo-intelligence.md)
+for geographic intelligence.
 
 ## Development setup
 
@@ -46,7 +47,7 @@ uv run celery -A worker.celery_app worker --loglevel=info -Q discovery,crawl,ext
 6. Social Discovery — **in review**
 7. Public RERA Enrichment — **in review**
 8. Duplicate Detection — **in review**
-9. Geographic Intelligence
+9. Geographic Intelligence — **in review**
 10. Lead Scoring
 11. Search Platform
 12. Automation

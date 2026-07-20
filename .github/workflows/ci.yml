@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+env:
+  UV_HTTP_TIMEOUT: "120"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.8.x"
+      - run: uvx ruff check .
+
+  test-python:
+    runs-on: ubuntu-latest
+    # Postgres + extensions are installed directly on the runner (not a docker
+    # service) so postgis/pgvector, which aren't in the default postgres image,
+    # come from the same apt packages the local dev setup docs point to.
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.8.x"
+
+      - name: Install Postgres extensions (postgis, pgvector)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-16-postgis-3 postgresql-16-pgvector
+          sudo systemctl start postgresql
+          sudo -u postgres psql -c "CREATE USER punerecpip WITH PASSWORD 'punerecpip_ci' CREATEDB;"
+          sudo -u postgres psql -c "CREATE DATABASE punerecpip_test OWNER punerecpip;"
+          sudo -u postgres psql -d punerecpip_test -c "CREATE EXTENSION IF NOT EXISTS citext; CREATE EXTENSION IF NOT EXISTS pg_trgm; CREATE EXTENSION IF NOT EXISTS postgis; CREATE EXTENSION IF NOT EXISTS vector; GRANT ALL ON SCHEMA public TO punerecpip;"
+
+      - name: Install dependencies
+        run: uv sync --all-packages
+
+      - name: Install Playwright's Chromium
+        # This runner has no pre-installed browser (unlike the sandbox this
+        # module was developed in — see docs/modules/04-crawling.md), so let
+        # Playwright fetch a build matching its own pinned revision. Leaving
+        # CHROMIUM_EXECUTABLE_PATH unset below means the worker settings
+        # default (None) applies and Playwright manages this install itself.
+        run: uv run --project apps/worker playwright install --with-deps chromium
+
+      - name: Run tests
+        env:
+          TEST_DATABASE_URL: postgresql+asyncpg://punerecpip:punerecpip_ci@localhost:5432/punerecpip_test
+        run: uv run pytest packages/core/tests apps/api/tests apps/worker/tests -v
